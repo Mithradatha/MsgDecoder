@@ -1,4 +1,4 @@
-mList = ['*', '*', 'B', '*', '*', 'D', 'C', 'E', 'A']
+mList = ['*', '*', 'B', '*', '*', 'D', 'E', 'C', 'A']
 
 data Tree a = Branch { leftChild :: Tree a, value :: a, rightChild :: Tree a } | Leaf { value :: a } deriving (Show)
 
@@ -13,15 +13,19 @@ mTree = fst $ listToTree mList
 
 mEncoding = [1,0,1,1,0,1,0,1]
 
+preorderTraverse (Leaf a) [] = (a, [])
+preorderTraverse (Leaf a) (x:xs) = (a, x:xs)
+preorderTraverse (Branch l v r) (x:xs)
+	| x == 0 = preorderTraverse l xs
+	| otherwise = preorderTraverse r xs
 
+decode (cs) [] = reverse cs
+decode (cs) (x:xs) = decode (mv:cs) (snd ml)
+	where 
+		ml = preorderTraverse mTree (x:xs)
+		mv = fst ml
 
-
-
-
-
-
-
-
+mDecoded = decode "" mEncoding
 
 
 
