@@ -32,7 +32,7 @@ decode (cs) (x:xs) = decode (mv:cs) (snd ml)
 
 main = interact getMahSheiteAndPukeItOut
 
-getMahSheiteAndPukeItOut input = unlines . map (decode "") decodingLists
+getMahSheiteAndPukeItOut input = map (decode "") decodingLists
     where decodingLists = tail (lines input)
           mTree = fst $ listToTree (head $ lines input)
 
