@@ -1,8 +1,8 @@
 
-data Tree = Branch { leftChild :: Tree, value :: Char, rightChild :: Tree } | Leaf { value :: Char } deriving (Show)
+data Tree = Branch { leftChild :: Tree, value :: Char, rightChild :: Tree } | Leaf { value :: Char } | Nil deriving (Show)
 
 listToTree :: [Char] -> (Tree, [Char])
-listToTree [] = (Leaf { value = '?' }, [])
+listToTree [] = (Nil, [])
 listToTree (c:cs)
     | c == '*' = (Branch { leftChild = fst leftSubTree, value = c, rightChild = fst rightSubTree }, snd rightSubTree)
     | otherwise = (Leaf { value = c }, cs)
@@ -11,9 +11,10 @@ listToTree (c:cs)
         rightSubTree = listToTree $ snd leftSubTree
 
 preorderTraverse :: Tree -> [Char] -> (Char, [Char])
+preorderTraverse Nil _ = (' ', [])
 preorderTraverse (Leaf v) [] = (v, [])
 preorderTraverse (Leaf v) (cs) = (v, cs)
-preorderTraverse (Branch _ _ _) [] = ('?', [])
+preorderTraverse (Branch _ _ _) [] = (' ', [])
 preorderTraverse (Branch l _ r) (c:cs)
     | c == '0' = preorderTraverse l cs
     | otherwise = preorderTraverse r cs
